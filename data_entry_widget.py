@@ -8,9 +8,12 @@ import pytz
 
 
 _ANIMALS = ["Rabbit", "Sheep", "Cow", "Chicken"]
+_TABLES = ["Vaccination", "Birth", "AnimalDB", "MasterDB"]
 # Default values the primary keys
 class DataEntryWidget:
     def __init__(self):
+        self.table = None
+
         # Master
         self.master_id = None
         self.name = None
@@ -43,36 +46,46 @@ class DataEntryWidget:
         self.count_from_couple = None
         self.date_of_delivery = None
 
-    def submit_data(self):
+    def submit_data(self) -> None:
         tkinter.messagebox.showwarning(title= "Check", message="Please double check all data.")
         
-        if accepted=="Accepted":
-            # User info
-            firstname = first_name_entry.get()
-            lastname = last_name_entry.get()
-            
-            if firstname and lastname:
-                title = title_combobox.get()
-                age = age_spinbox.get()
-                nationality = nationality_combobox.get()
-                
-                # Course info
-                registration_status = reg_status_var.get()
-                numcourses = numcourses_spinbox.get()
-                numsemesters = numsemesters_spinbox.get()
-                
-                print("First name: ", firstname, "Last name: ", lastname)
-                print("Title: ", title, "Age: ", age, "Nationality: ", nationality)
-                print("# Courses: ", numcourses, "# Semesters: ", numsemesters)
-                print("Registration status", registration_status)
-                print("------------------------------------------")
-            else:
-                tkinter.messagebox.showwarning(title="Error", message="First name and last name are required.")
-        else:
-            tkinter.messagebox.showwarning(title= "Error", message="You have not accepted the terms")            
+        # User info
+        print(self.name.get())
+        print(self.animal_type.get())
+        print(self.gender.get())
+        print(self.dob.get())
+        print(self.history.get("1.0", "end"))
 
+    def select_table(self):
+        table_func_mapping = {"MasterDB": self.open_master_db_entry_window(), "VaccinationDB": self.open_vaccination_db_entry_window()}
 
-    def open_animal_db_entry_window(self):
+        table_func_mapping[self.table.get()]
+
+        
+        
+    def open_table_selection_window(self) -> None:
+        window = tkinter.Tk()
+        window.resizable()
+        window.title("Entry Selection Form")
+
+        frame = tkinter.Frame(window)
+        frame.pack()
+
+        table_selection_frame =tkinter.LabelFrame(frame, text="Select Table")
+        table_selection_frame.grid(row=0, column=0, padx=21, pady=10)
+
+        table_label = tkinter.Label(table_selection_frame, text="Animal Type")
+        self.table = ttk.Combobox(table_selection_frame, values=_TABLES)
+        table_label.grid(row=0, column=1)
+        self.table.grid(row=1, column=1)
+
+        # Button
+        button = tkinter.Button(frame, text="Enter Data", command=self.select_table)
+        button.grid(row=2, column=0, sticky="news", padx=20, pady=10)
+        
+        window.mainloop()
+
+    def open_master_db_entry_window(self) -> None:
         window = tkinter.Tk()
         window.resizable()
         window.title("Data Entry Form")
@@ -89,21 +102,21 @@ class DataEntryWidget:
         self.name = tkinter.Entry(animal_id_frame) # Name Entry
         self.name.grid(row=1, column=0)
 
-        self.animal_type = tkinter.Label(animal_id_frame, text="Animal Type")
-        self.animal_type_combobox = ttk.Combobox(animal_id_frame, values=_ANIMALS)
-        self.animal_type.grid(row=0, column=1)
-        self.animal_type_combobox.grid(row=1, column=1)
+        animal_type_label = tkinter.Label(animal_id_frame, text="Animal Type")
+        self.animal_type = ttk.Combobox(animal_id_frame, values=_ANIMALS)
+        animal_type_label.grid(row=0, column=1)
+        self.animal_type.grid(row=1, column=1)
 
         gender_label = tkinter.Label(animal_id_frame, text="Gender")
-        gender_combobox = ttk.Combobox(animal_id_frame, values=["M", "F"])
+        self.gender = ttk.Combobox(animal_id_frame, values=["M", "F"])
         gender_label.grid(row=0, column=2)
-        gender_combobox.grid(row=1, column=2)
+        self.gender .grid(row=1, column=2)
 
         dob_label = tkinter.Label(animal_id_frame, text="Date of Birth")
-        sel=tkinter.StringVar()
-        cal=DateEntry(animal_id_frame, selectmode='day', textvariable=sel)
+        sel = tkinter.StringVar() # Allow for string input. Need the screen to update when it is entered.
+        self.dob = DateEntry(animal_id_frame, selectmode='day', textvariable=sel)
         dob_label.grid(row=2, column=0)
-        cal.grid(row=3, column=0)
+        self.dob.grid(row=3, column=0)
         
         history_label = tkinter.Label(animal_id_frame, text="History")
         self.history = tkinter.Text(animal_id_frame, width=20, height=4)
@@ -129,6 +142,15 @@ class DataEntryWidget:
         
         window.mainloop()
 
+    def open_vaccination_db_entry_window(self) -> None:
+        ...
+
+    def open_birth_db_entry_window(self) -> None:
+        ...
+
+    def open_animal_entry_db_window(self) -> None:
+        ...
+
 
 w = DataEntryWidget()
-w.open_animal_db_entry_window()
+w.open_table_selection_window()
