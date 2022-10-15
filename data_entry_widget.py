@@ -8,7 +8,7 @@ import pytz
 
 
 _ANIMALS = ["Rabbit", "Sheep", "Cow", "Chicken"]
-_TABLES = ["Vaccination", "Birth", "AnimalDB", "MasterDB"]
+_TABLES = ["VaccinationDB", "Birth", "AnimalDB", "MasterDB"]
 # Default values the primary keys
 class DataEntryWidget:
     def __init__(self):
@@ -49,17 +49,20 @@ class DataEntryWidget:
     def submit_data(self) -> None:
         tkinter.messagebox.showwarning(title= "Check", message="Please double check all data.")
         
-        # User info
-        print(self.name.get())
-        print(self.animal_type.get())
-        print(self.gender.get())
-        print(self.dob.get())
-        print(self.history.get("1.0", "end"))
+        # # User info
+        # print(self.name.get())
+        # print(self.animal_type.get())
+        # print(self.gender.get())
+        # print(self.dob.get())
+        # print(self.history.get("1.0", "end"))
 
-    def select_table(self):
-        table_func_mapping = {"MasterDB": self.open_master_db_entry_window(), "VaccinationDB": self.open_vaccination_db_entry_window()}
+    def select_table(self) -> None:
+        table = self.table.get()
+        if table == "MasterDB":
+            self.open_master_db_entry_window()
 
-        table_func_mapping[self.table.get()]
+        elif table == "VaccinationDB":
+            self.open_vaccination_db_entry_window()
 
         
         
@@ -110,7 +113,7 @@ class DataEntryWidget:
         gender_label = tkinter.Label(animal_id_frame, text="Gender")
         self.gender = ttk.Combobox(animal_id_frame, values=["M", "F"])
         gender_label.grid(row=0, column=2)
-        self.gender .grid(row=1, column=2)
+        self.gender.grid(row=1, column=2)
 
         dob_label = tkinter.Label(animal_id_frame, text="Date of Birth")
         sel = tkinter.StringVar() # Allow for string input. Need the screen to update when it is entered.
@@ -143,7 +146,43 @@ class DataEntryWidget:
         window.mainloop()
 
     def open_vaccination_db_entry_window(self) -> None:
-        ...
+        window = tkinter.Tk()
+        window.resizable()
+        window.title("Data Entry Form")
+
+        frame = tkinter.Frame(window)
+        frame.pack()
+
+        # Saving Animal information
+        vaccination_frame =tkinter.LabelFrame(frame, text="Vaccination Information")
+        vaccination_frame.grid(row=0, column=0, padx=21, pady=10)
+
+        vaccine_label = tkinter.Label(vaccination_frame, text="Vaccine")
+        vaccine_label.grid(row=0, column=0)
+        self.vaccine = tkinter.Entry(vaccination_frame) # Vaccine name entry
+        self.vaccine.grid(row=1, column=0)
+
+        dosage_label = tkinter.Label(vaccination_frame, text="Dosage (microL)")
+        dosage_label.grid(row=0, column=1)
+        self.dosage = tkinter.Entry(vaccination_frame) # Vaccine name entry
+        self.dosage.grid(row=1, column=1)
+
+        type_label = tkinter.Label(vaccination_frame, text="Type")
+        type_label.grid(row=0, column=2)
+        self.type = ttk.Combobox(vaccination_frame, values=["Nasal Spray", "Injection", "Oral Suspension"])
+        self.type.grid(row=1, column=2)
+
+        date_admin_label = tkinter.Label(vaccination_frame, text="Date of Administration")
+        sel = tkinter.StringVar() # Allow for string input. Need the screen to update when it is entered.
+        self.date_administered = DateEntry(vaccination_frame, selectmode='day', textvariable=sel)
+        date_admin_label.grid(row=2, column=0)
+        self.date_administered.grid(row=3, column=0)
+
+        # Button
+        button = tkinter.Button(frame, text="Submit", command=self.submit_data)
+        button.grid(row=3, column=0, sticky="news", padx=20, pady=10)
+
+        window.mainloop()
 
     def open_birth_db_entry_window(self) -> None:
         ...
