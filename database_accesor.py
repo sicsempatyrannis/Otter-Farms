@@ -7,8 +7,8 @@ import csv
 from typing import Any, Optional
 
 MASTER_TABLE_QUERY = '''
-        CREATE TABLE IF NOT EXISTS animals(
-            ID INTEGER PRIMARY KEY,
+        CREATE TABLE IF NOT EXISTS MasterDB(
+            ID TEXT PRIMARY KEY,
             Name TEXT,
             Type TEXT,
             Gender TEXT,
@@ -58,7 +58,7 @@ class Database:
                     Breed TEXT,
                     BirthRecordID INTEGER,
 
-                    FOREIGN KEY({animal}ID) REFERENCES animals(ID),
+                    FOREIGN KEY({animal}ID) REFERENCES MasterDB(ID),
                     FOREIGN KEY(BirthRecordID) REFERENCES BirthDB(BirthID),
                     )
                     '''
@@ -81,7 +81,7 @@ class Database:
                 Type TEXT,
                 Date TEXT
 
-                FOREIGN KEY(VaccinationID) REFERENCES animals(ID)
+                FOREIGN KEY(VaccinationID) REFERENCES MasterDB(ID)
                 """
 
         cursor = self.connection.cursor()
@@ -101,9 +101,9 @@ class Database:
                 CountFromCouple INTEGER,
                 DateOfDelivery TEXT
 
-                FOREIGN KEY(FemaleID) REFERENCES animals(ID)
-                FOREIGN KEY(MaleID) REFERENCES animals(ID)
-                FOREIGN KEY(OffSpringID) REFERENCES animals(ID)
+                FOREIGN KEY(FemaleID) REFERENCES MasterDB(ID)
+                FOREIGN KEY(MaleID) REFERENCES MasterDB(ID)
+                FOREIGN KEY(OffSpringID) REFERENCES MasterDB(ID)
                 """
 
         cursor = self.connection.cursor()
@@ -118,7 +118,7 @@ class Database:
                 MilkProduced INTEGER,
                 Date TEXT,
                 
-                FOREIGN KEY(FemaleID) REFERENCES animals(ID)
+                FOREIGN KEY(FemaleID) REFERENCES MasterDB(ID)
                 """
 
         cursor = self.connection.cursor()
@@ -147,6 +147,16 @@ class Database:
         query = f"INSERT INTO {table} {str(column_names)} VALUES {q_tuple}"
         cursor = self.connection.cursor()
         self._execute_query(cursor, query, parameters=records, many=True)
+
+    def insert_record(self, table: str, record: tuple[Any]) -> None:
+        logging.info(f"Inserting a record. Table: {table} /nRecord: {record}")
+    
+        column_names, no_of_cols = self._get_column_names(table)
+        q_tuple = str(tuple("?"*no_of_cols)).replace("'", "")
+
+        query = f"INSERT INTO {table} {str(column_names)} VALUES {q_tuple}"
+        cursor = self.connection.cursor()
+        self._execute_query(cursor, query=query, parameters=record)
 
     # For testing
     def delete_table(self, table):

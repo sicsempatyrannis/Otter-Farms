@@ -2,13 +2,18 @@ from configparser import NoOptionError
 import tkinter
 from tkinter import ttk
 from tkinter import messagebox
+from typing import Any
 from tkcalendar import DateEntry
 from datetime import datetime
 import pytz
+import uuid
+
+from database_accesor import Database
 
 
 _ANIMALS = ["Rabbit", "Sheep", "Cow", "Chicken"]
 _TABLES = ["VaccinationDB", "Birth", "AnimalDB", "MasterDB"]
+DBNAME = "DarkSister.db"
 # Default values the primary keys
 class DataEntryWidget:
     def __init__(self):
@@ -46,9 +51,15 @@ class DataEntryWidget:
         self.count_from_couple = None
         self.date_of_delivery = None
 
+        self.db_accessor = None
+
     def submit_data(self) -> None:
         tkinter.messagebox.showwarning(title= "Check", message="Please double check all data.")
-        
+        table = self.table.get()
+        if table == "MasterDB":
+
+
+            self.insert_master_db_record()
         # # User info
         # print(self.name.get())
         # print(self.animal_type.get())
@@ -67,6 +78,13 @@ class DataEntryWidget:
         
         
     def open_table_selection_window(self) -> None:
+        #Test code
+        db = Database(DBNAME)
+        with db:
+            db.delete_table("MasterDB")
+            db.create_master_table()
+        #Delete code above this point
+
         window = tkinter.Tk()
         window.resizable()
         window.title("Entry Selection Form")
@@ -77,7 +95,7 @@ class DataEntryWidget:
         table_selection_frame =tkinter.LabelFrame(frame, text="Select Table")
         table_selection_frame.grid(row=0, column=0, padx=21, pady=10)
 
-        table_label = tkinter.Label(table_selection_frame, text="Animal Type")
+        table_label = tkinter.Label(table_selection_frame, text="Table")
         self.table = ttk.Combobox(table_selection_frame, values=_TABLES)
         table_label.grid(row=0, column=1)
         self.table.grid(row=1, column=1)
@@ -189,6 +207,20 @@ class DataEntryWidget:
 
     def open_animal_entry_db_window(self) -> None:
         ...
+
+    def insert_master_db_record(self) -> None:
+        table = self.table.get()
+        db = Database(DBNAME)
+        dt = datetime.now()
+        record = (str(uuid.uuid4()), self.name.get(), self.animal_type.get(), self.gender.get(), self.dob.get(), self.history.get("1.0", "end"), 0, dt)
+        with db:
+            db.insert_record(table, record)
+
+    def insert_vaccination_db_record(self, record: tuple[Any]) -> None:
+        table = self.table.get()
+        db = Database(DBNAME)
+        with db:
+            db.insert_record(table, record)
 
 
 w = DataEntryWidget()
