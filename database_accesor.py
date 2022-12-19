@@ -73,15 +73,16 @@ class Database:
 
         # Type refers to method of administration injected, nasal spray
         query = """
-            CREATE IF NOT EXISTS VaccinationDB(
+            CREATE TABLE IF NOT EXISTS VaccinationDB(
                 VaccinationID INTEGER PRIMAYR KEY,
                 AnimalID INTEGER,
                 Vaccine TEXT,
-                Dosage/microL INT,
+                Dosage INT,
                 Type TEXT,
-                Date TEXT
+                Date TEXT,
 
                 FOREIGN KEY(VaccinationID) REFERENCES MasterDB(ID)
+                )
                 """
 
         cursor = self.connection.cursor()
@@ -112,13 +113,14 @@ class Database:
     # Convert milk produced into 
     def create_milk_production_table(self):
         query  = """
-            CREATE TABLE IF NOT EXISTS MilkProductionDB(
+            CREATE TABLE IF NOT EXISTS MilkDB(
                 MilkID INTEGER PRIMAYR KEY,
-                FemaleID INTEGER,
+                FemaleID TEXT,
                 MilkProduced INTEGER,
                 Date TEXT,
                 
                 FOREIGN KEY(FemaleID) REFERENCES MasterDB(ID)
+                )
                 """
 
         cursor = self.connection.cursor()
