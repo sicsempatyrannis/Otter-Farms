@@ -132,7 +132,11 @@ dmypy.json
 .tmp.driveupload*
 
 #Random
+<<<<<<< HEAD
 .idea/
 
 # Databases
 .db
+=======
+.idea/
+>>>>>>> 39f978d... separate ui files
