@@ -19,7 +19,10 @@ MASTER_TABLE_QUERY = '''
         )
         '''
 
+<<<<<<< HEAD:src/backend/database_accesor.py
 DBNAME = "DarkSister.db"
+=======
+>>>>>>> main:backend/database_accesor.py
 class Database:
     def __init__(self, database_name: str) -> None:
         self.database_name = database_name
@@ -93,18 +96,31 @@ class Database:
     # Inlcude a female or male value for an external animal, like a way to record for them in birth records.
     def create_birth_record_table(self):
         query = """
+<<<<<<< HEAD:src/backend/database_accesor.py
             CREATE TABLE IF NOT EXISTS BirthDB(
+=======
+            CREATE IF NOT EXISTS BirthDB(
+>>>>>>> main:backend/database_accesor.py
                 BirthID INTEGER PRIMAYR KEY,
                 FemaleID INTEGER,
                 MaleID INTEGER,
                 OffSpringID INTEGER,
+<<<<<<< HEAD:src/backend/database_accesor.py
                 DateOfDelivery TEXT,
                 OffspringGender TEXT,
+=======
+                PregnancyCount INTEGER,
+                CountFromCouple INTEGER,
+                DateOfDelivery TEXT
+>>>>>>> main:backend/database_accesor.py
 
                 FOREIGN KEY(FemaleID) REFERENCES MasterDB(ID)
                 FOREIGN KEY(MaleID) REFERENCES MasterDB(ID)
                 FOREIGN KEY(OffSpringID) REFERENCES MasterDB(ID)
+<<<<<<< HEAD:src/backend/database_accesor.py
                 )
+=======
+>>>>>>> main:backend/database_accesor.py
                 """
 
         cursor = self.connection.cursor()
@@ -173,3 +189,7 @@ class Database:
         records = cursor.execute(query).fetchall()
 
         print(records)
+<<<<<<< HEAD:src/backend/database_accesor.py
+=======
+
+>>>>>>> main:backend/database_accesor.py
