@@ -7,14 +7,14 @@ from datetime import datetime
 import pytz
 import uuid
 
-from milk_ui import Milk
-from vaccination_ui import Vaccination
-from master_ui import Master
-from birth_ui import Birth
-from database_accesor import Database
+from .milk_ui import Milk
+from .vaccination_ui import Vaccination
+from .master_ui import Master
+from .birth_ui import Birth
+from backend.database_accesor import Database, DBNAME
 
 _TABLES = ["VaccinationDB", "BirthDB", "MasterDB", "MilkDB"]
-DBNAME = "DarkSister.db"
+
 # Default values the primary keys
 class DataEntryWidget:
     def __init__(self):
@@ -78,6 +78,3 @@ class DataEntryWidget:
         button.grid(row=2, column=0, sticky="news", padx=20, pady=10)
         
         window.mainloop()
-
-    def open_birth_db_entry_window(self) -> None:
-        ...

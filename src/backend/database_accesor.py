@@ -19,6 +19,7 @@ MASTER_TABLE_QUERY = '''
         )
         '''
 
+DBNAME = "DarkSister.db"
 class Database:
     def __init__(self, database_name: str) -> None:
         self.database_name = database_name

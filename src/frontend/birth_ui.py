@@ -7,7 +7,7 @@ from datetime import datetime
 import pytz
 import uuid
 
-from database_accesor import Database
+from backend.database_accesor import Database, DBNAME
 
 _TABLE_NAME = "BirthDB"
 
@@ -64,7 +64,7 @@ class Birth:
         button.grid(row=3, column=0, sticky="news", padx=20, pady=10)
 
     def insert_brith_db_record(self) -> None:
-        db = Database("DarkSister.db")
+        db = Database(DBNAME)
         record = (self.birth_id, self.female_name.get(), self.male_name.get(), self.offspring_name.get(), self.date_of_delivery.get(), self.offspring_gender.get())
         with db:
             db.insert_record(_TABLE_NAME, record)

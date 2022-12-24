@@ -1,5 +1,5 @@
-tkinter
-tkcalender
+tk
+tkcalendar
 datetime
 uuid
 pytz

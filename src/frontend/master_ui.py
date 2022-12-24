@@ -7,15 +7,12 @@ from datetime import datetime
 import pytz
 import uuid
 
-from database_accesor import Database
+from backend.database_accesor import Database, DBNAME
 
 _ANIMALS = ["Rabbit", "Sheep", "Cow", "Chicken"]
-DBNAME = "DarkSister.db"
-
-
+_TABLE_NAME = "MasterDB"
 class Master:
     def __init__(self) -> None:
-        self.table = "MasterDB"
         self.master_id = str(uuid.uuid4())
         self.name = None
         self.animal_type = None
@@ -86,4 +83,4 @@ class Master:
         dt = datetime.now()
         record = (self.master_id, self.name.get(), self.animal_type.get(), self.gender.get(), self.date_of_birth.get(), self.history.get("1.0", "end"), 0, dt)
         with db:
-            db.insert_record(self.table, record)
+            db.insert_record(_TABLE_NAME, record)
