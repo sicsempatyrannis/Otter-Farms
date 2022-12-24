@@ -92,18 +92,18 @@ class Database:
     # Inlcude a female or male value for an external animal, like a way to record for them in birth records.
     def create_birth_record_table(self):
         query = """
-            CREATE IF NOT EXISTS BirthDB(
+            CREATE TABLE IF NOT EXISTS BirthDB(
                 BirthID INTEGER PRIMAYR KEY,
                 FemaleID INTEGER,
                 MaleID INTEGER,
                 OffSpringID INTEGER,
-                PregnancyCount INTEGER,
-                CountFromCouple INTEGER,
-                DateOfDelivery TEXT
+                DateOfDelivery TEXT,
+                OffspringGender TEXT,
 
                 FOREIGN KEY(FemaleID) REFERENCES MasterDB(ID)
                 FOREIGN KEY(MaleID) REFERENCES MasterDB(ID)
                 FOREIGN KEY(OffSpringID) REFERENCES MasterDB(ID)
+                )
                 """
 
         cursor = self.connection.cursor()
