@@ -172,4 +172,3 @@ class Database:
         records = cursor.execute(query).fetchall()
 
         print(records)
-
