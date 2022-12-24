@@ -1,4 +1,3 @@
-from configparser import NoOptionError
 import tkinter
 from tkinter import ttk
 from tkinter import messagebox
@@ -8,13 +7,14 @@ from datetime import datetime
 import pytz
 import uuid
 
-from database_accesor import Database
-from milk_ui import Milk
-from vaccination_ui import Vaccination
-from master_ui import Master
+from .milk_ui import Milk
+from .vaccination_ui import Vaccination
+from .master_ui import Master
+from .birth_ui import Birth
+from backend.database_accesor import Database, DBNAME
 
-_TABLES = ["VaccinationDB", "Birth", "AnimalDB", "MasterDB", "MilkDB"]
-DBNAME = "DarkSister.db"
+_TABLES = ["VaccinationDB", "BirthDB", "MasterDB", "MilkDB"]
+
 # Default values the primary keys
 class DataEntryWidget:
     def __init__(self):
@@ -24,15 +24,9 @@ class DataEntryWidget:
         self.master = Master()
         self.vaccination = Vaccination()
         self.milk = Milk()
+        self.birth = Birth()
 
-        # Birth
-        self.birth_id = None
-        self.female_id = None
-        self.male_id = None
-        self.offspring_id = None
-        self.pregnancy_count = None
-        self.count_from_couple = None
-        self.date_of_delivery = None
+        
 
     def select_table(self) -> None:
         table = self.table.get()
@@ -45,6 +39,9 @@ class DataEntryWidget:
         elif table == "MilkDB":
             self.milk.open_milk_production_db_window()
 
+        elif table == "BirthDB":
+            self.birth.open_birth_db_entry_window()
+
         
         
     def open_table_selection_window(self) -> None:
@@ -54,9 +51,11 @@ class DataEntryWidget:
             db.delete_table("MasterDB")
             db.delete_table("VaccinationDB")
             db.delete_table("MilkDB")
+            db.delete_table("BirthDB")
             db.create_master_table()
             db.create_vaccination_table()
             db.create_milk_production_table()
+            db.create_birth_record_table()
         #Delete code above this point
 
         window = tkinter.Tk()
@@ -79,6 +78,3 @@ class DataEntryWidget:
         button.grid(row=2, column=0, sticky="news", padx=20, pady=10)
         
         window.mainloop()
-
-    def open_birth_db_entry_window(self) -> None:
-        ...

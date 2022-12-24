@@ -7,13 +7,12 @@ from datetime import datetime
 import pytz
 import uuid
 
-from database_accesor import Database
+from backend.database_accesor import Database
 DBNAME = "DarkSister.db"
-
+_TABLE_NAME = "VaccinationDB"
 
 class Vaccination:
     def __init__(self) -> None:
-        self.table = "VaccinationDB"
         self.vaccination_id = str(uuid.uuid4())
         self.vaccine = None
         self.dosage = None
@@ -70,4 +69,4 @@ class Vaccination:
         db = Database(DBNAME)
         record = (self.vaccination_id, self.animal_id.get(), self.vaccine.get(), self.dosage.get(), self.vaccine_type.get(), self.date_administered.get())
         with db:
-            db.insert_record(self.table, record)
+            db.insert_record(_TABLE_NAME, record)

@@ -7,12 +7,12 @@ from datetime import datetime
 import pytz
 import uuid
 
-from database_accesor import Database
+from backend.database_accesor import Database
 DBNAME = "DarkSister.db"
+_TABLE_NAME = "MilkDB"
 
 class Milk:
     def __init__(self) -> None:
-        self.table = "MilkDB"
         self.milk_id = str(uuid.uuid4())
         self.female_id = None
         self.date_of_prod = None
@@ -57,4 +57,4 @@ class Milk:
         db = Database("DarkSister.db")
         record = (self.milk_id, self.female_id.get(), self.milk_produced.get(), self.date_of_prod.get())
         with db:
-            db.insert_record(self.table, record)
+            db.insert_record(_TABLE_NAME, record)
